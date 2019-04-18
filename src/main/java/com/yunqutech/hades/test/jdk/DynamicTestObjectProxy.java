@@ -1,4 +1,4 @@
-package com.yunqutech.hades.jdk;
+package com.yunqutech.hades.test.jdk;
 
 import com.yunqutech.hades.test.TestInterface;
 

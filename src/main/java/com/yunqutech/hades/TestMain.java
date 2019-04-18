@@ -1,7 +1,7 @@
 package com.yunqutech.hades;
 
 
-import com.yunqutech.hades.asm.AddLogAdapter;
+import com.yunqutech.hades.test.asm.AddLogAdapter;
 import com.yunqutech.hades.test.TestObject;
 import org.objectweb.asm.*;
 

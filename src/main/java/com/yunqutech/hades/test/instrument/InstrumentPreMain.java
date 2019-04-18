@@ -1,6 +1,6 @@
-package com.yunqutech.hades.instrument;
+package com.yunqutech.hades.test.instrument;
 
-import com.yunqutech.hades.instrument.doInstrument.Transformer;
+import com.yunqutech.hades.test.instrument.doInstrument.Transformer;
 import java.lang.instrument.Instrumentation;
 public class InstrumentPreMain extends Object {
     public static void premain(String agentArgs, Instrumentation inst) {

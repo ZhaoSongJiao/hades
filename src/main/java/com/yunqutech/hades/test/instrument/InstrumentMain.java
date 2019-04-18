@@ -1,4 +1,4 @@
-package com.yunqutech.hades.instrument;
+package com.yunqutech.hades.test.instrument;
 
 import com.yunqutech.hades.test.TestObject;
 

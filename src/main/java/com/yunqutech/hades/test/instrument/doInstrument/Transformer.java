@@ -1,4 +1,4 @@
-package com.yunqutech.hades.instrument.doInstrument;
+package com.yunqutech.hades.test.instrument.doInstrument;
 
 import com.yunqutech.hades.test.TestInterface;
 import javassist.ClassPool;
@@ -39,7 +39,7 @@ public class Transformer implements ClassFileTransformer {
                 return null;
             }
             //引入需要使用的class对应的包
-            ClassPool.getDefault().importPackage("com.yunqutech.hades.bussiness");
+            ClassPool.getDefault().importPackage("com.yunqutech.hades.test.bussiness");
             CtBehavior[] methods = currentClass.getMethods();
             for (CtBehavior method : methods) {
                 String methodName = method.getName();

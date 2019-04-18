@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: com.yunqutech.hades.instrument.InstrumentMain
-Premain-Class: com.yunqutech.hades.instrument.InstrumentPreMain
+Main-Class: com.yunqutech.hades.test.instrument.InstrumentMain
+Premain-Class: com.yunqutech.hades.test.instrument.InstrumentPreMain
 Can-Redefine-Classes: true
 Boot-Class-Path: javassist.jar

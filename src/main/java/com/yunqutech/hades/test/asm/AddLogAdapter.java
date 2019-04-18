@@ -1,4 +1,4 @@
-package com.yunqutech.hades.asm;
+package com.yunqutech.hades.test.asm;
 
 import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;

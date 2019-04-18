@@ -1,4 +1,4 @@
-package com.yunqutech.hades.bussiness;
+package com.yunqutech.hades.test.bussiness;
 
 public class InsertLog {
     public static void doLog(String doLog) {
