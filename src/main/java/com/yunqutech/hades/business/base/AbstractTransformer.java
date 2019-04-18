@@ -41,12 +41,14 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         printLog = new DefaultFileLog();
         watchingMethodList = new HashSet<>();
         this.putPackageName(printLog);
+        init();
     }
 
     public AbstractTransformer(PrintLog printLog) {
         this.printLog = printLog;
         watchingMethodList = new HashSet<>();
         this.putPackageName(printLog);
+        init();
     }
 
     /**
@@ -69,7 +71,7 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
             for (CtClass inter : interfaces) {
                 String interName = inter.getName();
                 if (interName.equals(this.getWatchingClassName())) {
-
+                    return true;
                 }
             }
         } catch (Exception ex) {
@@ -88,6 +90,8 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         return !isWatchingClass(className);
     }
 
+    public abstract void init();
+
     /**
      * when you want pre do something please finish this work
      *
@@ -103,11 +107,11 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     /**
      * when you have finish the transwork what will you do
      *
-     * @param loader classLoader
-     * @param className the class Name
+     * @param loader              classLoader
+     * @param className           the class Name
      * @param classBeingRedefined have definedClass
-     * @param protectionDomain domain
-     * @param classfileBuffer byte
+     * @param protectionDomain    domain
+     * @param classfileBuffer     byte
      */
     public abstract void doAfterTrans(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer);
 
@@ -175,7 +179,10 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         for (int i = 0; i < methods.length; i++) {
             CtMethod method = methods[i];
             if (method.getName().equals(methodName)) {
+                System.out.println("equals------>method:" + method.getName());
+
                 return watchingMethodList.add(methodName);
+
             }
         }
         return false;
@@ -189,4 +196,7 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         return this.watchingClass;
     }
 
+    protected PrintLog getPrintLog() {
+        return printLog;
+    }
 }
