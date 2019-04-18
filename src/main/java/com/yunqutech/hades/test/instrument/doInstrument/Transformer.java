@@ -39,7 +39,7 @@ public class Transformer implements ClassFileTransformer {
                 return null;
             }
             //引入需要使用的class对应的包
-            ClassPool.getDefault().importPackage("com.yunqutech.hades.test.bussiness");
+            ClassPool.getDefault().importPackage("com.yunqutech.hades.business.major");
             CtBehavior[] methods = currentClass.getMethods();
             for (CtBehavior method : methods) {
                 String methodName = method.getName();
@@ -47,12 +47,11 @@ public class Transformer implements ClassFileTransformer {
                     CtClass[] paramsType = method.getParameterTypes();
                     for (CtClass type : paramsType) {
                         String typeName = type.getName();
-                        System.out.println("param type:" + typeName);
+                        //       System.out.println("param type:" + typeName);
                         if ((String.class.getName().replaceAll("/", ".")).equals(typeName)) {
-                            System.out.println(" this is correct ");
-
+                            //         System.out.println(" this is correct ");
                             //静态类进行设置编码
-                            method.insertAt(0, " InsertLog.doLog($1);");
+                            method.insertAt(0, " EachSQLAFileLog.doStaticPrintLog($1);");
                             break;
                         }
                     }
@@ -70,7 +69,7 @@ public class Transformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        System.out.println("doTransFormClass:" + className);
+        //   System.out.println("doTransFormClass:" + className);
         return this.doTransClass(className, classfileBuffer);
     }
 }
