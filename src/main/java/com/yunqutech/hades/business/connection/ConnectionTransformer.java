@@ -12,7 +12,7 @@ public class ConnectionTransformer extends BaseTransformer {
     public void init() {
         super.init();
         try {
-            this.setWatchingClassName(Connection.class.getName());
+            this.putWatchingClassName(Connection.class.getName());
             this.addNewMethodName("prepareStatement");
             this.addNewMethodName("prepareCall");
             this.addNewMethodName("nativeSQL");

@@ -67,6 +67,9 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         className = className.replaceAll("/", ".");
         try {
             CtClass currentClass = getCtClassByName(className);
+            if (currentClass == null) {
+                return false;
+            }
             CtClass[] interfaces = currentClass.getInterfaces();
             for (CtClass inter : interfaces) {
                 String interName = inter.getName();
@@ -145,8 +148,13 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     }
 
 
-    private CtClass getCtClassByName(String className) throws Exception {
-        return ClassPool.getDefault().get(className);
+    private CtClass getCtClassByName(String className) {
+        try {
+            return ClassPool.getDefault().get(className);
+        } catch (Exception ex) {
+            //System.out.println("className :" + className + " 无法监控");
+            return null;
+        }
     }
 
     private void putPackageName(PrintLog printLog) {
@@ -157,9 +165,9 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         return watchingClassName;
     }
 
-    public void setWatchingClassName(String watchingClassName) throws Exception {
-        this.watchingClass = this.getCtClassByName(watchingClassName);
+    public void putWatchingClassName(String watchingClassName) {
         this.watchingClassName = watchingClassName;
+        this.watchingClass = this.getCtClassByName(watchingClassName);
     }
 
 

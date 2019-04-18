@@ -9,8 +9,13 @@ import java.lang.instrument.Instrumentation;
 public class InstrumentPreMain extends Object {
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("instrumentPreMain is calling");
-//        inst.addTransformer(new Transformer());
-        inst.addTransformer(new TestObjectTransform());
-        inst.addTransformer(new ConnectionTransformer());
+        //inst.addTransformer(new Transformer());
+        TestObjectTransform testTransform = new TestObjectTransform();
+        inst.addTransformer(testTransform);
+        ConnectionTransformer connectionTransformer = new ConnectionTransformer();
+        inst.addTransformer(connectionTransformer);
+//        inst.removeTransformer(connectionTransformer);
+//        inst.removeTransformer(testTransform);
+
     }
 }
