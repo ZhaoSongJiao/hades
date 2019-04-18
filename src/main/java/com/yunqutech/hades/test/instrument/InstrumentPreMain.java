@@ -11,6 +11,6 @@ public class InstrumentPreMain extends Object {
         System.out.println("instrumentPreMain is calling");
 //        inst.addTransformer(new Transformer());
         inst.addTransformer(new TestObjectTransform());
-//        inst.addTransformer(new ConnectionTransformer());
+        inst.addTransformer(new ConnectionTransformer());
     }
 }

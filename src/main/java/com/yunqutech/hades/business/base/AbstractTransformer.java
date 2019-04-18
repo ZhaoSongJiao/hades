@@ -179,7 +179,7 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         for (int i = 0; i < methods.length; i++) {
             CtMethod method = methods[i];
             if (method.getName().equals(methodName)) {
-                System.out.println("equals------>method:" + method.getName());
+                System.out.println("watching------>class:" + this.getWatchingClassName() + "\tmethod:" + method.getName());
 
                 return watchingMethodList.add(methodName);
 
@@ -189,7 +189,10 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     }
 
     protected String getPackageName() {
-        return packageName;
+        if (StringUtils.isNotBlank(packageName)) {
+            return packageName.replaceAll("/", ".");
+        }
+        return "";
     }
 
     protected CtClass getWatchingClass() {

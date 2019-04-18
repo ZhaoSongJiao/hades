@@ -31,14 +31,12 @@ public class BaseTransformer extends AbstractTransformer {
         if (isNotWatchClass(className)) {
             return null;
         }
+        className = className.replaceAll("/", ".");
         try {
-            // System.out.println("packageName:" + this.getPackageName());
-            // System.out.println("className:" + className);
             ClassPool.getDefault().importPackage(this.getPackageName());
-            CtClass ctClass = ClassPool.getDefault().get(className.replaceAll("/", "."));
+            CtClass ctClass = ClassPool.getDefault().get(className);
             CtMethod[] methods = ctClass.getMethods();
             for (CtMethod method : methods) {
-                // System.out.println("method name:" + method.getName());
                 //如果是监听的对象的话执行某个操作
                 if (this.getWatchingMethodList().contains(method.getName())) {
                     realDoing(method);
@@ -58,9 +56,12 @@ public class BaseTransformer extends AbstractTransformer {
             for (CtClass type : paramsType) {
                 String typeName = type.getName();
                 if ((String.class.getName().replaceAll("/", ".")).equals(typeName)) {
-                    System.out.println(" this is correct method:" + method.getName() + " param Type:" + typeName);
-                    //静态类进行设置编码
-                    method.insertAt(0, "EachSQLAFileLog.doStaticPrintLog($1); System.out.println(\"123\");");
+                    //   System.out.println(" this is correct method:" + method.getName() + " param Type:" + typeName);
+                    PrintLog log = this.getPrintLog();
+                    String className = log.getClass().getSimpleName();
+                    String insertData = className + " print = new " + className + "(); print.doPrintLog($1);";
+                    //静态类进行设置编码 //"EachSQLAFileLog.doStaticPrintLog($1);"
+                    method.insertAt(0, insertData);
                     break;
                 }
             }
