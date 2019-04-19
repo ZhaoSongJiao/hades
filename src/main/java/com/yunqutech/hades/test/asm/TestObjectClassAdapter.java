@@ -12,7 +12,6 @@ public class TestObjectClassAdapter extends ClassAdapter {
     @Override
     public MethodVisitor visitMethod(final int access, final String name,
                                      final String desc, final String signature, final String[] exceptions) {
-//        System.out.println("name:" + name + " access:" + access + " desc:" + desc + " signature:" + signature);
 
         //这里进行控制
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
@@ -22,6 +21,8 @@ public class TestObjectClassAdapter extends ClassAdapter {
         if (!name.equals("testMethod")) {
             return methodVisitor;
         }
+        System.out.println("name:" + name + " access:" + access + " desc:" + desc + " signature:" + signature);
+
         if (!desc.equals("(Ljava/lang/String;)V")) {
             return methodVisitor;
         }

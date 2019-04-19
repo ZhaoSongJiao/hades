@@ -15,9 +15,12 @@ import java.security.ProtectionDomain;
 public class TestObjectASMTransformer implements ClassFileTransformer {
     private String checkClassName;
 
+    public TestObjectASMTransformer(String checkClassName) {
+        this.checkClassName = checkClassName;
+    }
+
     public TestObjectASMTransformer() {
-        this.checkClassName = TestObject.class.getName().replaceAll("/", ".");
-        System.out.println("check :" + checkClassName);
+        this.checkClassName = "com.yunqutech.hades.test.TestObject";
     }
 
     @Override
@@ -26,12 +29,13 @@ public class TestObjectASMTransformer implements ClassFileTransformer {
         if (StringUtils.isBlank(className))
             return null;
 
-        if (className.contains("yunqutech")) {
-            System.out.println("class Name:" + className);
+/*        if (className.contains("yunqutech")) {
+//            System.out.println("class Name:" + className);
         } else {
             return null;
-        }
+        }*/
 
+/*
 
         try {
             ClassReader reader = new ClassReader(classfileBuffer);
@@ -42,6 +46,7 @@ public class TestObjectASMTransformer implements ClassFileTransformer {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+*/
 
         return null;
     }

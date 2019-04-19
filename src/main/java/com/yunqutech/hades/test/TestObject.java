@@ -18,6 +18,7 @@ public class TestObject implements TestInterface {
     @Override
     public void testMethod(String name) {
         System.out.println("String method");
+        System.out.println(name);
 
 
         System.out.println(name);
@@ -27,22 +28,10 @@ public class TestObject implements TestInterface {
 
     public void testMethod1(String name) {
         System.out.println("String method1");
+        System.out.println(name);
 
         PrintLog printLog = new DefaultFileLog();
         printLog.doPrintLog(name);
-
-        /*
-            mv.visitTypeInsn(Opcodes.NEW, "com/yunqutech/hades/business/major/DefaultFileLog");
-            mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/yunqutech/hades/business/major/DefaultFileLog", "<init>", "()V", false);
-            mv.visitVarInsn(Opcodes.ASTORE, 2);
-            mv.visitVarInsn(Opcodes.ALOAD, 2);
-            mv.visitVarInsn(Opcodes.ALOAD, 1);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/yunqutech/hades/business/major/PrintLog", "doPrintLog", "(Ljava/lang/String;)V", true);
-
-        * */
-
-
         System.out.println(name);
         System.out.println("String method2 end");
     }

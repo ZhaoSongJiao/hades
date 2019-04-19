@@ -1,13 +1,10 @@
 package com.yunqutech.hades.business.base;
 
-import com.yunqutech.hades.business.major.EachSQLAFileLog;
 import com.yunqutech.hades.business.major.PrintLog;
 import javassist.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.ProtectionDomain;
-import java.util.Collection;
-import java.util.Objects;
 
 public class AssistBaseTransformer extends AbstractTransformer {
     @Override
@@ -17,7 +14,7 @@ public class AssistBaseTransformer extends AbstractTransformer {
 
     @Override
     public void doPreTrans(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
-        System.out.println("class Name:" + className);
+//        System.out.println("class Name:" + className);
     }
 
     @Override
@@ -32,8 +29,6 @@ public class AssistBaseTransformer extends AbstractTransformer {
         }
         className = className.replaceAll("/", ".");
         try {
-
-
             ClassPool.getDefault().importPackage(this.getPackageName());
             CtClass ctClass = ClassPool.getDefault().get(className);
             CtMethod[] methods = ctClass.getMethods();
