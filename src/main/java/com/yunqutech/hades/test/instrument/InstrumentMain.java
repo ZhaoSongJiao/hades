@@ -13,6 +13,7 @@ public class InstrumentMain {
         System.out.println("------------------------------");
         object.testMethod("jzs", "desc");
         System.out.println("------------------------------");
+        object.testMethod("zj test desc");
 
     }
 }

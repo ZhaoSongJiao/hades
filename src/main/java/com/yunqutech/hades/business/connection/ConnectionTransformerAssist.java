@@ -1,11 +1,11 @@
 package com.yunqutech.hades.business.connection;
 
 
-import com.yunqutech.hades.business.base.BaseTransformer;
+import com.yunqutech.hades.business.base.AssistBaseTransformer;
 
 import java.sql.Connection;
 
-public class ConnectionTransformer extends BaseTransformer {
+public class ConnectionTransformerAssist extends AssistBaseTransformer {
 
 
     @Override

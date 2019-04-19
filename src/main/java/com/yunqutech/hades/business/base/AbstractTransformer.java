@@ -2,8 +2,6 @@ package com.yunqutech.hades.business.base;
 
 import com.yunqutech.hades.business.major.DefaultFileLog;
 import com.yunqutech.hades.business.major.PrintLog;
-import javassist.ClassPool;
-import javassist.CtClass;
 import javassist.CtMethod;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,11 +17,7 @@ import java.util.Set;
 public abstract class AbstractTransformer implements ClassFileTransformer {
 
 
-    private String watchingClassName;
-    /**
-     * 被监听的类
-     */
-    private CtClass watchingClass;
+    protected String watchingClassName;
 
     /**
      * 被监听的类型
@@ -51,47 +45,6 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         init();
     }
 
-    /**
-     * is our watching class
-     *
-     * @param className
-     * @return
-     */
-    public boolean isWatchingClass(String className) {
-        if (StringUtils.isBlank(this.getWatchingClassName())) {
-            return false;
-        }
-        if (StringUtils.isBlank(className)) {
-            return false;
-        }
-        className = className.replaceAll("/", ".");
-        try {
-            CtClass currentClass = getCtClassByName(className);
-            if (currentClass == null) {
-                return false;
-            }
-            CtClass[] interfaces = currentClass.getInterfaces();
-            for (CtClass inter : interfaces) {
-                String interName = inter.getName();
-                if (interName.equals(this.getWatchingClassName())) {
-                    return true;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * is not our watching class
-     *
-     * @param className
-     * @return
-     */
-    public boolean isNotWatchClass(String className) {
-        return !isWatchingClass(className);
-    }
 
     public abstract void init();
 
@@ -119,14 +72,8 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     public abstract void doAfterTrans(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer);
 
 
-    public abstract byte[] doTransClass(String className);
+    public abstract byte[] doTransClass(String className,byte[] classBinarySource);
 
-    /**
-     * when you find your need Method  this is what will you do
-     *
-     * @param method the method you have found
-     */
-    public abstract void realDoing(CtMethod method);
 
     /**
      * this is the method from the
@@ -142,20 +89,12 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
      */
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         this.doPreTrans(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
-        byte[] data = this.doTransClass(className);
+        byte[] data = this.doTransClass(className,classfileBuffer);
         this.doAfterTrans(loader, className, classBeingRedefined, protectionDomain, data);
         return data;
     }
 
 
-    private CtClass getCtClassByName(String className) {
-        try {
-            return ClassPool.getDefault().get(className);
-        } catch (Exception ex) {
-            //System.out.println("className :" + className + " 无法监控");
-            return null;
-        }
-    }
 
     private void putPackageName(PrintLog printLog) {
         packageName = printLog.getClass().getPackage().getName().replaceAll("/", ".");
@@ -167,7 +106,6 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
 
     public void putWatchingClassName(String watchingClassName) {
         this.watchingClassName = watchingClassName;
-        this.watchingClass = this.getCtClassByName(watchingClassName);
     }
 
 
@@ -175,36 +113,13 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
         return watchingMethodList;
     }
 
-    public boolean addNewMethodName(String methodName) {
-        if (this.watchingClass == null) {
-            throw new RuntimeException("please set WatchingClass first");
-        }
 
-        CtMethod[] methods = this.watchingClass.getMethods();
-        if (methods == null || methods.length == 0)
-            return false;
-
-        for (int i = 0; i < methods.length; i++) {
-            CtMethod method = methods[i];
-            if (method.getName().equals(methodName)) {
-                System.out.println("watching------>class:" + this.getWatchingClassName() + "\tmethod:" + method.getName());
-
-                return watchingMethodList.add(methodName);
-
-            }
-        }
-        return false;
-    }
 
     protected String getPackageName() {
         if (StringUtils.isNotBlank(packageName)) {
             return packageName.replaceAll("/", ".");
         }
         return "";
-    }
-
-    protected CtClass getWatchingClass() {
-        return this.watchingClass;
     }
 
     protected PrintLog getPrintLog() {

@@ -51,7 +51,7 @@ public class Transformer implements ClassFileTransformer {
                         if ((String.class.getName().replaceAll("/", ".")).equals(typeName)) {
                             //         System.out.println(" this is correct ");
                             //静态类进行设置编码
-                            method.insertAt(0, " EachSQLAFileLog.doStaticPrintLog($1);");
+                            method.insertAt(0, " EachSQLAFileLog.doStaticPrintLog($1); System.out.println($1)");
                             break;
                         }
                     }
