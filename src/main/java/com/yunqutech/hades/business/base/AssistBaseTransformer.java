@@ -1,12 +1,35 @@
 package com.yunqutech.hades.business.base;
 
+import com.yunqutech.hades.business.major.DefaultFileLog;
 import com.yunqutech.hades.business.major.PrintLog;
 import javassist.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.ProtectionDomain;
+import java.util.HashSet;
 
 public class AssistBaseTransformer extends AbstractTransformer {
+
+    public AssistBaseTransformer() {
+        printLog = new DefaultFileLog();
+        watchingMethodList = new HashSet<>();
+        this.putPackageName(printLog);
+        init();
+    }
+
+    public AssistBaseTransformer(PrintLog printLog) {
+        this.printLog = printLog;
+        watchingMethodList = new HashSet<>();
+        this.putPackageName(printLog);
+        init();
+    }
+
+    /**
+     * 日志的包名称
+     */
+    private String packageName;
+
+
     @Override
     public void init() {
 
@@ -154,5 +177,16 @@ public class AssistBaseTransformer extends AbstractTransformer {
         return false;
     }
 
+
+    protected String getPackageName() {
+        if (StringUtils.isNotBlank(packageName)) {
+            return packageName.replaceAll("/", ".");
+        }
+        return "";
+    }
+
+    private void putPackageName(PrintLog printLog) {
+        packageName = printLog.getClass().getPackage().getName().replaceAll("/", ".");
+    }
 
 }

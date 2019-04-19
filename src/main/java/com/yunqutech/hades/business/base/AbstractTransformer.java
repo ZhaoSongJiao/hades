@@ -22,26 +22,21 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     /**
      * 被监听的类型
      */
-    private Set<String> watchingMethodList;
+    protected Set<String> watchingMethodList;
 
-    private PrintLog printLog;
 
-    /**
-     * 日志的包名称
-     */
-    private String packageName;
+    protected PrintLog printLog;
+
 
     public AbstractTransformer() {
-        printLog = new DefaultFileLog();
+        this.printLog = new DefaultFileLog();
         watchingMethodList = new HashSet<>();
-        this.putPackageName(printLog);
         init();
     }
 
     public AbstractTransformer(PrintLog printLog) {
         this.printLog = printLog;
         watchingMethodList = new HashSet<>();
-        this.putPackageName(printLog);
         init();
     }
 
@@ -72,7 +67,7 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     public abstract void doAfterTrans(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer);
 
 
-    public abstract byte[] doTransClass(String className,byte[] classBinarySource);
+    public abstract byte[] doTransClass(String className, byte[] classBinarySource);
 
 
     /**
@@ -89,16 +84,11 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
      */
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         this.doPreTrans(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
-        byte[] data = this.doTransClass(className,classfileBuffer);
+        byte[] data = this.doTransClass(className, classfileBuffer);
         this.doAfterTrans(loader, className, classBeingRedefined, protectionDomain, data);
         return data;
     }
 
-
-
-    private void putPackageName(PrintLog printLog) {
-        packageName = printLog.getClass().getPackage().getName().replaceAll("/", ".");
-    }
 
     public String getWatchingClassName() {
         return watchingClassName;
@@ -114,15 +104,9 @@ public abstract class AbstractTransformer implements ClassFileTransformer {
     }
 
 
-
-    protected String getPackageName() {
-        if (StringUtils.isNotBlank(packageName)) {
-            return packageName.replaceAll("/", ".");
-        }
-        return "";
-    }
-
     protected PrintLog getPrintLog() {
         return printLog;
     }
+
+
 }
